@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reboot 01 Login</title>
+    <style>
+        .hidden { display: none; }
+        .error { color: red; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div id="login-container">
+        <h2>Login</h2>
+        <div id="error-msg" class="error"></div>
+        <form id="login-form">
+            <input type="text" id="identifier" placeholder="Username or Email" required><br><br>
+            <input type="password" id="password" placeholder="Password" required><br><br>
+            <button type="submit">Sign In</button>
+        </form>
+    </div>
+
+    <div id="profile-container" class="hidden">
+        <h2>Welcome to your Profile</h2>
+        <button id="logout-btn">Log Out</button>
+        <div id="user-data"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
