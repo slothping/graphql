@@ -30,8 +30,10 @@ loginForm.addEventListener('submit', async (e) => {
             throw new Error("Invalid credentials or server error.");
         }
 
-        const jwt = await response.json();
-        localStorage.setItem('reboot_jwt', jwt);
+        const data = await response.json();
+        // server may return { token: '...' } or just the string
+        const token = data.token || data;
+        localStorage.setItem('reboot_jwt', token);
         showProfile();
         
     } catch (err) {
@@ -40,19 +42,41 @@ loginForm.addEventListener('submit', async (e) => {
 });
 
 logoutBtn.addEventListener('click', () => {
+    logout();
+});
+
+function logout() {
     localStorage.removeItem('reboot_jwt');
     location.reload();
-});
+}
+
+function isTokenExpired(token) {
+    try {
+        const parts = token.split('.');
+        if (parts.length !== 3) return true;
+        const payload = JSON.parse(atob(parts[1]));
+        if (!payload.exp) return false;
+        // exp is in seconds since unix epoch
+        return Date.now() / 1000 > payload.exp;
+    } catch (e) {
+        console.warn('Failed to parse token for expiration', e);
+        return true;
+    }
+}
 
 function showProfile() {
     loginContainer.classList.add('hidden');
     profileContainer.classList.remove('hidden');
     fetchUserData();
-    console.log("Logged in! Token stored.");
 }
 
 async function fetchUserData() {
     const token = localStorage.getItem('reboot_jwt');
+    if (!token || isTokenExpired(token)) {
+        logout();
+        return;
+    }
+
     const GQL_URL = `https://learn.reboot01.com/api/graphql-engine/v1/graphql`;
 
     const query = `
@@ -76,14 +100,28 @@ async function fetchUserData() {
         body: JSON.stringify({ query })
     });
 
-    const userDataElement = document.getElementById('user-data');
+    if (response.status === 401) {
+        logout();
+        return;
+    }
 
     const result = await response.json();
-    userdata = result.data.user[0];
+    if (result.errors) {
+        console.warn('GraphQL error fetching user data', result.errors);
+        logout();
+        return;
+    }
+
+    const userDataElement = document.getElementById('user-data');
+    const userdata = result.data.user[0];
     userDataElement.innerText = `Welcome, ${userdata.login}! You have ${userdata.transactions.reduce((sum, t) => sum + t.amount, 0)} XP.`;
-    console.log(result.data.user);
 }
 
-if (localStorage.getItem('reboot_jwt')) {
+// initial load: show profile only if token present and unexpired
+const stored = localStorage.getItem('reboot_jwt');
+if (stored && !isTokenExpired(stored)) {
     showProfile();
+} else if (stored) {
+    localStorage.removeItem('reboot_jwt');
 }
+
