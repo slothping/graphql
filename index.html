@@ -1,30 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Reboot 01 Login</title>
+    <title>Reboot Profile</title>
+
     <style>
-        .hidden { display: none; }
-        .error { color: red; margin-bottom: 10px; }
+        #tooltip {
+            position: fixed;
+            display: none;
+            background: white;
+            border: 1px solid black;
+            padding: 8px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+        }
     </style>
 </head>
+
 <body>
+
     <div id="login-container">
         <h2>Login</h2>
-        <div id="error-msg" class="error"></div>
+
+        <div id="error-msg"></div>
+
         <form id="login-form">
-            <input type="text" id="identifier" placeholder="Username or Email" required><br><br>
-            <input type="password" id="password" placeholder="Password" required><br><br>
-            <button type="submit">Sign In</button>
+            <input type="text" id="identifier" placeholder="Username or Email" required>
+
+            <input type="password" id="password" placeholder="Password" required>
+
+            <button type="submit">
+                Login
+            </button>
         </form>
     </div>
 
-    <div id="profile-container" class="hidden">
-        <h2>Welcome to your Profile</h2>
-        <button id="logout-btn">Log Out</button>
+    <div id="profile-container" hidden>
+
+        <h2>Profile</h2>
+
+        <button id="logout-btn">
+            Logout
+        </button>
+
         <div id="user-data"></div>
+
+        <h3>XP Progress</h3>
+
+        <svg id="xp-graph" width="600" height="250" style="border:1px solid black">
+        </svg>
+
+        <h3>Pass / Fail Ratio</h3>
+
+        <svg id="passfail-graph" width="300" height="300" style="border:1px solid black">
+        </svg>
+
     </div>
 
     <script src="app.js"></script>
+
+    <div id="tooltip"></div>
+
 </body>
+
 </html>
