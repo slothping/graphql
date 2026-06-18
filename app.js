@@ -402,8 +402,11 @@ function drawAuditGraph(up, down) {
 
     const svg =
         document.getElementById(
-            "passfail-graph"
+            "audit-graph"
         );
+
+    const tooltip =
+        document.getElementById("tooltip");
 
     const total = up + down;
 
@@ -429,49 +432,116 @@ function drawAuditGraph(up, down) {
             Math.PI / 180
         );
 
-    svg.innerHTML = `
-        <path
-            d="
-            M150 150
-            L150 50
-            A100 100 0 ${largeArc} 1 ${x} ${y}
-            Z"
-            fill="#4caf50"
-        />
+    svg.innerHTML = "";
 
-        <path
-            d="
-            M150 150
-            L${x} ${y}
-            A100 100 0 ${largeArc ? 0 : 1} 1 150 50
-            Z"
-            fill="#f44336"
-        />
+    // Done slice (green)
+    const donePath =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
+        );
 
-        <circle
-            cx="150"
-            cy="150"
-            r="55"
-            fill="white"
-        />
+    donePath.setAttribute(
+        "d",
+        `M150 150 L150 50 A100 100 0 ${largeArc} 1 ${x} ${y} Z`
+    );
+    donePath.setAttribute("fill", "#4caf50");
 
-        <text
-            x="150"
-            y="145"
-            text-anchor="middle"
-            font-size="16"
-            font-weight="bold"
-        >
-            ${(up / down).toFixed(2)}
-        </text>
+    donePath.addEventListener("mouseenter", () => {
+        tooltip.style.display = "block";
+        tooltip.innerHTML = `
+            <strong>Done</strong><br>
+            XP: ${(up / 1000).toFixed(2)} kB<br>
+            Percentage: ${((up / total) * 100).toFixed(1)}%
+        `;
+    });
 
-        <text
-            x="150"
-            y="165"
-            text-anchor="middle"
-            font-size="12"
-        >
-            Audit Ratio
-        </text>
-    `;
+    donePath.addEventListener("mousemove", e => {
+        tooltip.style.left = (e.clientX + 15) + "px";
+        tooltip.style.top = (e.clientY + 15) + "px";
+    });
+
+    donePath.addEventListener("mouseleave", () => {
+        tooltip.style.display = "none";
+    });
+
+    svg.appendChild(donePath);
+
+    // Received slice (red)
+    const receivedPath =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
+        );
+
+    receivedPath.setAttribute(
+        "d",
+        `M150 150 L${x} ${y} A100 100 0 ${largeArc ? 0 : 1} 1 150 50 Z`
+    );
+    receivedPath.setAttribute("fill", "#f44336");
+
+    receivedPath.addEventListener("mouseenter", () => {
+        tooltip.style.display = "block";
+        tooltip.innerHTML = `
+            <strong>Received</strong><br>
+            XP: ${(down / 1000).toFixed(2)} kB<br>
+            Percentage: ${((down / total) * 100).toFixed(1)}%
+        `;
+    });
+
+    receivedPath.addEventListener("mousemove", e => {
+        tooltip.style.left = (e.clientX + 15) + "px";
+        tooltip.style.top = (e.clientY + 15) + "px";
+    });
+
+    receivedPath.addEventListener("mouseleave", () => {
+        tooltip.style.display = "none";
+    });
+
+    svg.appendChild(receivedPath);
+
+    // White center circle
+    const circle =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "circle"
+        );
+
+    circle.setAttribute("cx", "150");
+    circle.setAttribute("cy", "150");
+    circle.setAttribute("r", "55");
+    circle.setAttribute("fill", "white");
+
+    svg.appendChild(circle);
+
+    // Ratio text
+    const ratioText =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text"
+        );
+
+    ratioText.setAttribute("x", "150");
+    ratioText.setAttribute("y", "145");
+    ratioText.setAttribute("text-anchor", "middle");
+    ratioText.setAttribute("font-size", "16");
+    ratioText.setAttribute("font-weight", "bold");
+    ratioText.textContent = (up / down).toFixed(2);
+
+    svg.appendChild(ratioText);
+
+    // Label text
+    const labelText =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text"
+        );
+
+    labelText.setAttribute("x", "150");
+    labelText.setAttribute("y", "165");
+    labelText.setAttribute("text-anchor", "middle");
+    labelText.setAttribute("font-size", "12");
+    labelText.textContent = "Audit Ratio";
+
+    svg.appendChild(labelText);
 }
