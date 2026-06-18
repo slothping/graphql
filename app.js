@@ -23,6 +23,15 @@ loginForm.addEventListener("submit", login);
 
 logoutBtn.addEventListener("click", logout);
 
+// Initialize on page load
+window.addEventListener("DOMContentLoaded", () => {
+    const token = localStorage.getItem("reboot_jwt");
+
+    if (token && !isTokenExpired(token)) {
+        showProfile();
+    }
+});
+
 async function login(e) {
     e.preventDefault();
 
