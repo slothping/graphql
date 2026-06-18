@@ -351,7 +351,7 @@ function drawXPGraph(transactions) {
 
         circle.setAttribute("cx", x);
         circle.setAttribute("cy", y);
-        circle.setAttribute("r", 6);
+        circle.setAttribute("r", 5);
         circle.setAttribute("fill", "#2196f3");
 
         const projectName =

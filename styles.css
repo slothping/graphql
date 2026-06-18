@@ -1,0 +1,103 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: system-ui, sans-serif;
+    background: #f8f9fb;
+    color: #111;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+}
+
+#login-container,
+#profile-container {
+    width: min(760px, 100%);
+    background: #fff;
+    border: 1px solid #d6d8de;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+#login-container h2,
+#profile-container h2,
+#profile-container h3 {
+    margin: 0 0 16px;
+    font-weight: 600;
+}
+
+#login-form {
+    display: grid;
+    gap: 12px;
+}
+
+#login-form input,
+#login-form button,
+#logout-btn {
+    font: inherit;
+}
+
+#login-form input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #cbd2d9;
+    border-radius: 8px;
+    background: #fafbfc;
+}
+
+#login-form button,
+#logout-btn {
+    cursor: pointer;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #fff;
+}
+
+#logout-btn {
+    margin-bottom: 18px;
+}
+
+#user-data {
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+#xp-graph,
+#audit-graph {
+    display: block;
+    margin: 12px auto 24px;
+    border: 1px solid #d6d8de;
+    border-radius: 8px;
+    background: #fff;
+}
+
+#xp-graph {
+    width: min(100%, 600px);
+}
+
+#audit-graph {
+    width: min(100%, 300px);
+}
+
+#tooltip {
+    position: fixed;
+    display: none;
+    background: white;
+    border: 1px solid #cbd2d9;
+    padding: 8px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+}
