@@ -248,6 +248,43 @@ async function fetchUserData() {
     );
 }
 
+function attachTooltipHandlers(element, tooltip, renderHtml) {
+    const showTooltip = event => {
+        tooltip.style.display = "block";
+        tooltip.innerHTML = renderHtml();
+        const touch = event.touches ? event.touches[0] : event;
+        tooltip.style.left = (touch.clientX + 15) + "px";
+        tooltip.style.top = (touch.clientY + 15) + "px";
+    };
+
+    const moveTooltip = event => {
+        const touch = event.touches ? event.touches[0] : event;
+        tooltip.style.left = (touch.clientX + 15) + "px";
+        tooltip.style.top = (touch.clientY + 15) + "px";
+    };
+
+    const hideTooltip = () => {
+        tooltip.style.display = "none";
+    };
+
+    element.addEventListener("mouseenter", showTooltip);
+    element.addEventListener("mousemove", moveTooltip);
+    element.addEventListener("mouseleave", hideTooltip);
+
+    element.addEventListener("touchstart", e => {
+        e.preventDefault();
+        showTooltip(e);
+    }, { passive: false });
+
+    element.addEventListener("touchmove", e => {
+        e.preventDefault();
+        moveTooltip(e);
+    }, { passive: false });
+
+    element.addEventListener("touchend", hideTooltip);
+    element.addEventListener("touchcancel", hideTooltip);
+}
+
 function drawXPGraph(transactions) {
 
     const svg =
@@ -357,42 +394,12 @@ function drawXPGraph(transactions) {
         const projectName =
             t.path.split("/").pop();
 
-        circle.addEventListener(
-            "mouseenter",
-            () => {
-
-                tooltip.style.display =
-                    "block";
-
-                tooltip.innerHTML = `
-                    <strong>${projectName}</strong><br>
-                    XP: ${(t.amount / 1000).toFixed(2)} kB<br>
-                    Total XP: ${(cumulative / 1000).toFixed(2)} kB<br>
-                    Date: ${new Date(t.createdAt).toLocaleDateString()}
-                `;
-            }
-        );
-
-        circle.addEventListener(
-            "mousemove",
-            e => {
-
-                tooltip.style.left =
-                    (e.clientX + 15) + "px";
-
-                tooltip.style.top =
-                    (e.clientY + 15) + "px";
-            }
-        );
-
-        circle.addEventListener(
-            "mouseleave",
-            () => {
-
-                tooltip.style.display =
-                    "none";
-            }
-        );
+        attachTooltipHandlers(circle, tooltip, () => `
+            <strong>${projectName}</strong><br>
+            XP: ${(t.amount / 1000).toFixed(2)} kB<br>
+            Total XP: ${(cumulative / 1000).toFixed(2)} kB<br>
+            Date: ${new Date(t.createdAt).toLocaleDateString()}
+        `);
 
         svg.appendChild(circle);
     });
@@ -447,23 +454,11 @@ function drawAuditGraph(up, down) {
     );
     donePath.setAttribute("fill", "#4caf50");
 
-    donePath.addEventListener("mouseenter", () => {
-        tooltip.style.display = "block";
-        tooltip.innerHTML = `
-            <strong>Done</strong><br>
-            XP: ${(up / 1000).toFixed(2)} kB<br>
-            Percentage: ${((up / total) * 100).toFixed(1)}%
-        `;
-    });
-
-    donePath.addEventListener("mousemove", e => {
-        tooltip.style.left = (e.clientX + 15) + "px";
-        tooltip.style.top = (e.clientY + 15) + "px";
-    });
-
-    donePath.addEventListener("mouseleave", () => {
-        tooltip.style.display = "none";
-    });
+    attachTooltipHandlers(donePath, tooltip, () => `
+        <strong>Done</strong><br>
+        XP: ${(up / 1000).toFixed(2)} kB<br>
+        Percentage: ${((up / total) * 100).toFixed(1)}%
+    `);
 
     svg.appendChild(donePath);
 
@@ -480,23 +475,11 @@ function drawAuditGraph(up, down) {
     );
     receivedPath.setAttribute("fill", "#f44336");
 
-    receivedPath.addEventListener("mouseenter", () => {
-        tooltip.style.display = "block";
-        tooltip.innerHTML = `
-            <strong>Received</strong><br>
-            XP: ${(down / 1000).toFixed(2)} kB<br>
-            Percentage: ${((down / total) * 100).toFixed(1)}%
-        `;
-    });
-
-    receivedPath.addEventListener("mousemove", e => {
-        tooltip.style.left = (e.clientX + 15) + "px";
-        tooltip.style.top = (e.clientY + 15) + "px";
-    });
-
-    receivedPath.addEventListener("mouseleave", () => {
-        tooltip.style.display = "none";
-    });
+    attachTooltipHandlers(receivedPath, tooltip, () => `
+        <strong>Received</strong><br>
+        XP: ${(down / 1000).toFixed(2)} kB<br>
+        Percentage: ${((down / total) * 100).toFixed(1)}%
+    `);
 
     svg.appendChild(receivedPath);
 
