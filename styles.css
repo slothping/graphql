@@ -72,6 +72,74 @@ body {
     line-height: 1.6;
 }
 
+#project-history-section {
+    margin-bottom: 24px;
+}
+
+.project-history-card {
+    padding: 18px;
+    border: 1px solid #d6d8de;
+    border-radius: 12px;
+    background: #f9fbff;
+}
+
+.project-history-card h3 {
+    margin: 0 0 14px;
+}
+
+.project-history-table-wrapper {
+    max-height: 150px;
+    overflow: hidden;
+    transition: max-height 0.2s ease, overflow 0.2s ease;
+    border-radius: 10px;
+    background: white;
+}
+
+.project-history-table-wrapper.scrollable {
+    overflow-y: auto;
+}
+
+.project-history-table-wrapper.scrollable::-webkit-scrollbar {
+    width: 8px;
+}
+
+.project-history-table-wrapper.scrollable::-webkit-scrollbar-thumb {
+    background: rgba(37, 99, 235, 0.5);
+    border-radius: 999px;
+}
+
+.project-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.project-history-table th,
+.project-history-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.project-history-table th {
+    color: #334155;
+    font-weight: 600;
+}
+
+.project-history-button {
+    margin-top: 14px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+
+.project-history-empty {
+    color: #64748b;
+}
+
 #xp-graph,
 #audit-graph {
     display: block;

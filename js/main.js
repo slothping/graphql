@@ -6,6 +6,7 @@ import { drawXPGraph, drawAuditGraph } from "./graph.js";
 const loginForm = document.getElementById("login-form");
 const logoutBtn = document.getElementById("logout-btn");
 const errorMsg = document.getElementById("error-msg");
+const projectHistorySection = document.getElementById("project-history-section");
 
 loginForm.addEventListener("submit", login);
 logoutBtn.addEventListener("click", logout);
@@ -59,6 +60,7 @@ async function loadProfile() {
     const {
         filteredTransactions,
         totalXP,
+        projects,
         summary
     } = normalizeUserData(user);
 
@@ -71,6 +73,48 @@ async function loadProfile() {
         <p>In Progress: ${summary.inProgress}</p>
     `;
 
+    renderProjectHistory(filteredTransactions);
     drawXPGraph(filteredTransactions);
     drawAuditGraph(user.totalUp, user.totalDown);
+}
+
+function renderProjectHistory(transactions) {
+    const visibleTransactions = [...transactions].reverse();
+
+    projectHistorySection.innerHTML = `
+        <div class="project-history-card">
+            <h3>Recent XP Submissions</h3>
+            <div class="project-history-table-wrapper" id="project-history-table-wrapper">
+                <table class="project-history-table">
+                    <thead>
+                        <tr>
+                            <th>Submission</th>
+                            <th>XP Amount</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${visibleTransactions.map(transaction => `
+                            <tr>
+                                <td>${transaction.path || "Unknown"}</td>
+                                <td>${transaction.amount} XP</td>
+                                <td>${new Date(transaction.createdAt).toLocaleDateString()}</td>
+                            </tr>
+                        `).join("")}
+                    </tbody>
+                </table>
+            </div>
+            <button class="project-history-button" id="project-history-button">
+                View More
+            </button>
+        </div>
+    `;
+
+    const wrapper = document.getElementById("project-history-table-wrapper");
+    const button = document.getElementById("project-history-button");
+
+    button.addEventListener("click", () => {
+        const isScrollable = wrapper.classList.toggle("scrollable");
+        button.textContent = isScrollable ? "Hide Scroll" : "View More";
+    });
 }
