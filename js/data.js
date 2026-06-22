@@ -43,6 +43,8 @@ export async function fetchUserData() {
           path
           grade
           isDone
+          createdAt
+          updatedAt
         }
       }
     }`;
@@ -57,35 +59,29 @@ export async function fetchUserData() {
     });
 
     const result = await response.json();
-
     return result.data.user[0];
 }
 
 export function normalizeUserData(user) {
-    const filteredTransactions =
-        user.transactions.filter(t => {
-            const path = t.path;
+    const filteredTransactions = user.transactions.filter(t => {
+        const path = t.path;
 
-            if (path === "/bahrain/bh-module/piscine-js") {
-                return true;
-            }
-
-            if (path.startsWith("/bahrain/bh-module/checkpoint")) {
-                return false;
-            }
-
-            if (path.startsWith("/bahrain/bh-module/piscine-js/")) {
-                return false;
-            }
-
+        if (path === "/bahrain/bh-module/piscine-js") {
             return true;
-        });
+        }
 
-    const totalXP =
-        filteredTransactions.reduce(
-            (sum, t) => sum + t.amount,
-            0
-        );
+        if (path.startsWith("/bahrain/bh-module/checkpoint")) {
+            return false;
+        }
+
+        if (path.startsWith("/bahrain/bh-module/piscine-js/")) {
+            return false;
+        }
+
+        return true;
+    });
+
+    const totalXP = filteredTransactions.reduce((sum, t) => sum + t.amount, 0);
 
     const projectMap = {};
 
@@ -114,15 +110,9 @@ export function normalizeUserData(user) {
         totalXP,
         projects,
         summary: {
-            passed: projects.filter(
-                p => p.grade !== null && p.grade >= 1
-            ).length,
-            failed: projects.filter(
-                p => p.isDone && p.grade !== null && p.grade < 1
-            ).length,
-            inProgress: projects.filter(
-                p => !p.isDone
-            ).length
+            passed: projects.filter(p => p.grade !== null && p.grade >= 1).length,
+            failed: projects.filter(p => p.isDone && p.grade !== null && p.grade < 1).length,
+            inProgress: projects.filter(p => !p.isDone).length
         }
     };
 }
