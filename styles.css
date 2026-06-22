@@ -17,8 +17,7 @@ body {
     padding: 24px;
 }
 
-#login-container,
-#profile-container {
+#login-container {
     width: min(760px, 100%);
     background: #fff;
     border: 1px solid #d6d8de;
@@ -27,11 +26,69 @@ body {
     box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 
+#profile-container {
+    width: min(900px, 100%);
+    padding: 24px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
+    gap: 24px;
+    align-items: stretch;
+}
+
+#profile-container[hidden],
+#login-container[hidden] {
+    display: none !important;
+}
+
+#profile-container > h2,
+#profile-container > button,
+#profile-container > #user-data,
+#profile-container > .xp-graph-card,
+#profile-container > .audit-graph-card {
+    grid-column: 1 / -1;
+}
+
+#insights-section,
+#project-history-section,
+.graph-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.insights-card,
+.project-history-card,
+.graph-card {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 #login-container h2,
 #profile-container h2,
 #profile-container h3 {
     margin: 0 0 16px;
     font-weight: 600;
+}
+
+.graph-card {
+    padding: 18px;
+    border: 1px solid #d6d8de;
+    border-radius: 12px;
+    background: #f9fbff;
+}
+
+.graph-card h3 {
+    margin: 0 0 14px;
+}
+
+#xp-graph,
+#audit-graph {
+    width: 100%;
 }
 
 #login-form {
@@ -97,11 +154,18 @@ body {
 }
 
 .insights-list li {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
     gap: 12px;
     padding: 10px 0;
     border-bottom: 1px solid #e2e8f0;
+}
+
+.insights-list li span,
+.insights-list li strong,
+.insight-duration {
+    margin: 0;
 }
 
 .insights-list li span {
@@ -155,6 +219,7 @@ body {
     padding: 10px 12px;
     text-align: left;
     border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
 }
 
 .project-history-table th {

@@ -19,7 +19,12 @@ export function isTokenExpired(token) {
 
 export function logout() {
     localStorage.removeItem("reboot_jwt");
-    location.reload();
+    document.getElementById("profile-container").hidden = true;
+    document.getElementById("login-container").hidden = false;
+    const errorMsg = document.getElementById("error-msg");
+    if (errorMsg) {
+        errorMsg.textContent = "";
+    }
 }
 
 export function showProfile() {
