@@ -74,9 +74,13 @@ async function loadProfile() {
         <p>In Progress: ${summary.inProgress}</p>
     `;
 
-    renderInsights(filteredTransactions);
+    const graphTransactions = filteredTransactions.filter(
+        t => !t.path.startsWith("/bahrain/bh-module/checkpoint/")
+    );
+
+    renderInsights(graphTransactions);
     renderProjectHistory(filteredTransactions);
-    drawXPGraph(filteredTransactions);
+    drawXPGraph(graphTransactions);
     drawAuditGraph(user.totalUp, user.totalDown);
 }
 

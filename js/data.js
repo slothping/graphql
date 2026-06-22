@@ -65,20 +65,13 @@ export async function fetchUserData() {
 export function normalizeUserData(user) {
     const filteredTransactions = user.transactions.filter(t => {
         const path = t.path;
+        const parts = path.split("/").filter(Boolean);
 
-        if (path === "/bahrain/bh-module/piscine-js") {
+        if (path.startsWith("/bahrain/bh-module/checkpoint")) {
             return true;
         }
 
-        if (path.startsWith("/bahrain/bh-module/checkpoint")) {
-            return false;
-        }
-
-        if (path.startsWith("/bahrain/bh-module/piscine-js/")) {
-            return false;
-        }
-
-        return true;
+        return parts.length === 3 && parts[0] === "bahrain" && parts[1] === "bh-module";
     });
 
     const totalXP = filteredTransactions.reduce((sum, t) => sum + t.amount, 0);
