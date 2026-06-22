@@ -43,11 +43,11 @@ body {
     display: none !important;
 }
 
-#profile-container > h2,
-#profile-container > button,
-#profile-container > #user-data,
-#profile-container > .xp-graph-card,
-#profile-container > .audit-graph-card {
+#profile-container>h2,
+#profile-container>button,
+#profile-container>#user-data,
+#profile-container>.xp-graph-card,
+#profile-container>.audit-graph-card {
     grid-column: 1 / -1;
 }
 
