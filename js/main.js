@@ -66,12 +66,40 @@ async function loadProfile() {
     } = normalizeUserData(user);
 
     document.getElementById("user-data").innerHTML = `
-        <p>Login: ${user.login}</p>
-        <p>Total XP: ${(totalXP / 1000).toFixed(1)} kB</p>
-        <p>Audit Ratio: ${user.auditRatio.toFixed(2)}</p>
-        <p>Passed Projects: ${summary.passed}</p>
-        <p>Failed Projects: ${summary.failed}</p>
-        <p>In Progress: ${summary.inProgress}</p>
+        <div class="profile-summary-card">
+            <div class="summary-item">
+                <span class="summary-label">Login</span>
+                <strong>${user.login}</strong>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Total XP</span>
+                <strong>${(totalXP / 1000).toFixed(1)} kB</strong>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Audit Ratio</span>
+                <strong>${user.auditRatio.toFixed(2)}</strong>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Audit Received</span>
+                <strong>${(user.totalUp / 1000).toFixed(1)} kB</strong>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Audit Done</span>
+                <strong>${(user.totalDown / 1000).toFixed(1)} kB</strong>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Passed Projects</span>
+                <strong>${summary.passed}</strong>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Failed Projects</span>
+                <strong>${summary.failed}</strong>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">In Progress</span>
+                <strong>${summary.inProgress}</strong>
+            </div>
+        </div>
     `;
 
     const graphTransactions = filteredTransactions.filter(

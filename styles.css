@@ -134,6 +134,42 @@ body {
     margin-bottom: 24px;
 }
 
+.profile-summary-card {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    padding: 18px;
+    border: 1px solid #d6d8de;
+    border-radius: 12px;
+    background: #f9fbff;
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.summary-label {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.summary-item strong {
+    font-size: 1.05rem;
+    color: #0f172a;
+}
+
+@media (max-width: 720px) {
+    .profile-summary-card {
+        grid-template-columns: 1fr;
+    }
+}
+
 .insights-card,
 .project-history-card {
     padding: 18px;
