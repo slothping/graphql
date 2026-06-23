@@ -4,15 +4,18 @@ import { fetchUserData, normalizeUserData } from "./data.js";
 import { drawXPGraph, drawAuditGraph } from "./graph.js";
 
 const loginForm = document.getElementById("login-form");
-const logoutBtn = document.getElementById("logout-btn");
 const errorMsg = document.getElementById("error-msg");
+const headerUsername = document.getElementById("header-username");
+const headerAuthButton = document.getElementById("header-auth-button");
 const insightsSection = document.getElementById("insights-section");
 const projectHistorySection = document.getElementById("project-history-section");
 
 loginForm.addEventListener("submit", login);
-logoutBtn.addEventListener("click", logout);
+headerAuthButton.addEventListener("click", handleHeaderAuth);
 
 window.addEventListener("DOMContentLoaded", async () => {
+    updateHeader("Guest", false);
+    document.getElementById("app-header").hidden = true;
     const token = localStorage.getItem("reboot_jwt");
 
     if (token && !isTokenExpired(token)) {
@@ -20,6 +23,25 @@ window.addEventListener("DOMContentLoaded", async () => {
         await loadProfile();
     }
 });
+
+function handleHeaderAuth() {
+    if (headerAuthButton.textContent === "Logout") {
+        logout();
+        document.getElementById("login-container").hidden = false;
+        document.getElementById("profile-container").hidden = true;
+        document.getElementById("app-header").hidden = true;
+        updateHeader("Guest", false);
+    } else {
+        document.getElementById("login-container").hidden = false;
+        document.getElementById("profile-container").hidden = true;
+        document.getElementById("identifier").focus();
+    }
+}
+
+function updateHeader(userName, loggedIn) {
+    headerUsername.textContent = userName || "Guest";
+    headerAuthButton.textContent = loggedIn ? "Logout" : "Login";
+}
 
 async function login(e) {
     e.preventDefault();
@@ -64,6 +86,8 @@ async function loadProfile() {
         projects,
         summary
     } = normalizeUserData(user);
+
+    updateHeader(user.login, true);
 
     document.getElementById("user-data").innerHTML = `
         <div class="profile-summary-card">

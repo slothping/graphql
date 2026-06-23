@@ -21,6 +21,7 @@ export function logout() {
     localStorage.removeItem("reboot_jwt");
     document.getElementById("profile-container").hidden = true;
     document.getElementById("login-container").hidden = false;
+    document.getElementById("app-header").hidden = true;
     const errorMsg = document.getElementById("error-msg");
     if (errorMsg) {
         errorMsg.textContent = "";
@@ -30,4 +31,5 @@ export function logout() {
 export function showProfile() {
     document.getElementById("login-container").hidden = true;
     document.getElementById("profile-container").hidden = false;
+    document.getElementById("app-header").hidden = false;
 }

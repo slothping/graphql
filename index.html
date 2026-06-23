@@ -10,6 +10,20 @@
 
 <body>
 
+    <header id="app-header" hidden>
+        <div class="header-left">
+            <img src="reboot_logo.png" alt="Reboot logo" class="header-logo">
+            <div>
+                <div class="header-title">Reboot Dashboard</div>
+                <div class="header-subtitle">Project status & profile</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <span id="header-username">Guest</span>
+            <button id="header-auth-button" type="button">Login</button>
+        </div>
+    </header>
+
     <div id="login-container">
         <h2>Login</h2>
 
@@ -28,14 +42,7 @@
 
     <div id="profile-container" hidden>
 
-        <h2>Profile</h2>
-
-        <button id="logout-btn">
-            Logout
-        </button>
-
         <div id="user-data"></div>
-
         <div id="insights-section"></div>
         <div id="project-history-section"></div>
 
