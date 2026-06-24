@@ -7,8 +7,10 @@ body {
     margin: 0;
     min-height: 100%;
     font-family: system-ui, sans-serif;
-    background: #f8f9fb;
-    color: #111;
+    /* Black-dominant background with yellow accents */
+    background: radial-gradient(circle at 12% 12%, rgba(246, 190, 0, 0.12) 0%, rgba(246, 190, 0, 0.08) 6%, transparent 12%),
+        linear-gradient(180deg, #030303 0%, #070707 60%, #0b0b0b 100%);
+    color: #e6e6e6;
 }
 
 body {
@@ -33,10 +35,10 @@ body {
     gap: 18px;
     padding: 18px 24px;
     margin-bottom: 24px;
-    background: #fff;
-    border: 1px solid #d6d8de;
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.9), rgba(8, 8, 8, 0.95));
+    border: 1px solid rgba(255, 215, 0, 0.06);
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     position: sticky;
     top: 0;
     z-index: 50;
@@ -57,10 +59,11 @@ body {
 .header-title {
     font-size: 1.1rem;
     font-weight: 700;
+    color: #f8f5e6;
 }
 
 .header-subtitle {
-    color: #64748b;
+    color: rgba(230, 220, 140, 0.9);
     font-size: 0.95rem;
 }
 
@@ -72,7 +75,7 @@ body {
 
 #header-username {
     font-weight: 600;
-    color: #111827;
+    color: #f3f3f3;
 }
 
 #header-auth-button {
@@ -81,44 +84,41 @@ body {
     padding: 10px 18px;
     border: none;
     border-radius: 10px;
-    background: #2563eb;
-    color: #fff;
+    background: #f6c700;
+    /* yellow accent */
+    color: #070707;
 }
 
 #header-gitea {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: 8px;
-    color: #64748b;
+    color: rgba(230, 220, 140, 0.9);
     text-decoration: none;
 }
 
-#header-gitea svg {
-    width: 44px;
-    height: 44px;
-}
-
 #header-gitea img.header-gitea-img {
-    width: 44px;
-    height: 44px;
+    width: 26px;
+    height: 26px;
     display: block;
+    filter: invert(1) brightness(1.1) sepia(0.2) saturate(1.2) hue-rotate(15deg);
 }
 
 #header-gitea:hover {
-    background: rgba(37, 99, 235, 0.08);
-    color: #2563eb;
+    background: rgba(246, 199, 0, 0.08);
+    color: #f6c700;
 }
 
 #login-container {
     width: min(760px, 100%);
-    background: #fff;
-    border: 1px solid #d6d8de;
+    background: linear-gradient(180deg, rgba(15, 15, 15, 0.9), rgba(10, 10, 10, 0.9));
+    border: 1px solid rgba(255, 215, 0, 0.04);
     border-radius: 12px;
     padding: 24px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
 
 #profile-container {
@@ -173,9 +173,9 @@ body {
 
 .graph-card {
     padding: 18px;
-    border: 1px solid #d6d8de;
+    border: 1px solid rgba(255, 215, 0, 0.04);
     border-radius: 12px;
-    background: #f9fbff;
+    background: linear-gradient(180deg, rgba(12, 12, 12, 0.8), rgba(8, 8, 8, 0.85));
 }
 
 .graph-card h3 {
@@ -201,9 +201,10 @@ body {
 #login-form input {
     width: 100%;
     padding: 12px 14px;
-    border: 1px solid #cbd2d9;
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 8px;
-    background: #fafbfc;
+    background: rgba(255, 255, 255, 0.02);
+    color: #eaeaea;
 }
 
 #login-form button,
@@ -212,8 +213,8 @@ body {
     padding: 10px 16px;
     border: none;
     border-radius: 8px;
-    background: #2563eb;
-    color: #fff;
+    background: #f6c700;
+    color: #070707;
 }
 
 #logout-btn {
@@ -235,9 +236,9 @@ body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
     padding: 18px;
-    border: 1px solid #d6d8de;
+    border: 1px solid rgba(255, 215, 0, 0.04);
     border-radius: 12px;
-    background: #f9fbff;
+    background: linear-gradient(180deg, rgba(12, 12, 12, 0.8), rgba(8, 8, 8, 0.85));
 }
 
 .summary-item {
@@ -245,19 +246,19 @@ body {
     flex-direction: column;
     gap: 8px;
     padding: 14px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.02);
     border-radius: 12px;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .summary-label {
-    color: #64748b;
+    color: #bdb58a;
     font-size: 0.95rem;
 }
 
 .summary-item strong {
     font-size: 1.05rem;
-    color: #0f172a;
+    color: #f3f3f3;
 }
 
 @media (max-width: 720px) {
@@ -269,9 +270,9 @@ body {
 .insights-card,
 .project-history-card {
     padding: 18px;
-    border: 1px solid #d6d8de;
+    border: 1px solid rgba(255, 215, 0, 0.04);
     border-radius: 12px;
-    background: #f9fbff;
+    background: linear-gradient(180deg, rgba(12, 12, 12, 0.8), rgba(8, 8, 8, 0.85));
 }
 
 .insights-card h3,
@@ -301,16 +302,16 @@ body {
 }
 
 .insights-list li span {
-    color: #475569;
+    color: #b8b7b0;
 }
 
 .insights-list li strong {
     font-weight: 700;
-    color: #0f172a;
+    color: #f3f3f3;
 }
 
 .insight-duration {
-    color: #2563eb;
+    color: #f6c700;
     font-weight: 600;
     margin-left: auto;
 }
@@ -324,7 +325,7 @@ body {
     overflow: hidden;
     transition: max-height 0.2s ease, overflow 0.2s ease;
     border-radius: 10px;
-    background: white;
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.8), rgba(6, 6, 6, 0.85));
 }
 
 .project-history-table-wrapper.scrollable {
@@ -336,7 +337,7 @@ body {
 }
 
 .project-history-table-wrapper.scrollable::-webkit-scrollbar-thumb {
-    background: rgba(37, 99, 235, 0.5);
+    background: rgba(246, 199, 0, 0.6);
     border-radius: 999px;
 }
 
@@ -355,7 +356,7 @@ body {
 }
 
 .project-history-table th {
-    color: #334155;
+    color: #d6d0a3;
     font-weight: 600;
 }
 
@@ -364,8 +365,8 @@ body {
     padding: 10px 16px;
     border: none;
     border-radius: 8px;
-    background: #2563eb;
-    color: white;
+    background: #f6c700;
+    color: #070707;
     cursor: pointer;
 }
 
@@ -377,9 +378,9 @@ body {
 #audit-graph {
     display: block;
     margin: 12px auto 24px;
-    border: 1px solid #d6d8de;
+    border: 1px solid rgba(255, 215, 0, 0.04);
     border-radius: 8px;
-    background: #fff;
+    background: linear-gradient(180deg, rgba(8, 8, 8, 0.85), rgba(6, 6, 6, 0.9));
 }
 
 #xp-graph {
@@ -393,12 +394,13 @@ body {
 #tooltip {
     position: fixed;
     display: none;
-    background: white;
-    border: 1px solid #cbd2d9;
+    background: rgba(10, 10, 10, 0.95);
+    border: 1px solid rgba(255, 215, 0, 0.06);
     padding: 8px;
     font-size: 12px;
     pointer-events: none;
     z-index: 1000;
     border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    color: #f3f3f3;
 }

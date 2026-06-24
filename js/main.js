@@ -122,7 +122,7 @@ async function loadProfile() {
                 <strong>${summary.failed}</strong>
             </div>
             <div class="summary-item">
-                <span class="summary-label">In Progress</span>
+                <span class="summary-label">Projects In Progress</span>
                 <strong>${summary.inProgress}</strong>
             </div>
         </div>

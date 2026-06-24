@@ -69,8 +69,8 @@ export function drawXPGraph(transactions) {
         <polyline
             points="${points.join(" ")}" 
             fill="none"
-            stroke="black"
-            stroke-width="2"
+            stroke="white"
+            stroke-width="3"
         />
     `;
 
@@ -87,7 +87,7 @@ export function drawXPGraph(transactions) {
         circle.setAttribute("cx", x);
         circle.setAttribute("cy", y);
         circle.setAttribute("r", 5);
-        circle.setAttribute("fill", "#2196f3");
+        circle.setAttribute("fill", "yellow");
 
         const projectName = t.path.split("/").pop();
 
@@ -116,7 +116,7 @@ export function drawAuditGraph(up, down) {
 
     const donePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
     donePath.setAttribute("d", `M150 150 L150 50 A100 100 0 ${largeArc} 1 ${x} ${y} Z`);
-    donePath.setAttribute("fill", "#4caf50");
+    donePath.setAttribute("fill", "#f6c700");
     attachTooltipHandlers(donePath, tooltip, () => `
         <strong>Done</strong><br>
         XP: ${(up / 1000).toFixed(2)} kB<br>
@@ -126,7 +126,7 @@ export function drawAuditGraph(up, down) {
 
     const receivedPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
     receivedPath.setAttribute("d", `M150 150 L${x} ${y} A100 100 0 ${largeArc ? 0 : 1} 1 150 50 Z`);
-    receivedPath.setAttribute("fill", "#f44336");
+    receivedPath.setAttribute("fill", "#2e2e2e");
     attachTooltipHandlers(receivedPath, tooltip, () => `
         <strong>Received</strong><br>
         XP: ${(down / 1000).toFixed(2)} kB<br>
@@ -147,6 +147,7 @@ export function drawAuditGraph(up, down) {
     ratioText.setAttribute("text-anchor", "middle");
     ratioText.setAttribute("font-size", "16");
     ratioText.setAttribute("font-weight", "bold");
+    ratioText.setAttribute("fill", "#000");
     ratioText.textContent = (up / down).toFixed(2);
     svg.appendChild(ratioText);
 
@@ -155,6 +156,7 @@ export function drawAuditGraph(up, down) {
     labelText.setAttribute("y", "165");
     labelText.setAttribute("text-anchor", "middle");
     labelText.setAttribute("font-size", "12");
+    labelText.setAttribute("fill", "#666");
     labelText.textContent = "Audit Ratio";
     svg.appendChild(labelText);
 }
