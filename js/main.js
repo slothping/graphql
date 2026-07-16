@@ -94,7 +94,7 @@ async function loadProfile() {
     document.getElementById("user-data").innerHTML = `
         <div class="profile-summary-card">
             <div class="summary-item">
-                <span class="summary-label">Login</span>
+                <span class="summary-label">Username</span>
                 <strong>${user.login}</strong>
             </div>
             <div class="summary-item">
@@ -116,14 +116,6 @@ async function loadProfile() {
             <div class="summary-item">
                 <span class="summary-label">Passed Projects</span>
                 <strong>${summary.passed}</strong>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Failed Projects</span>
-                <strong>${summary.failed}</strong>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Projects In Progress</span>
-                <strong>${summary.inProgress}</strong>
             </div>
         </div>
     `;
