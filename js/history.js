@@ -39,6 +39,10 @@ export function renderProjectHistory(transactions, container = document.getEleme
         button.addEventListener("click", () => {
             const isScrollable = wrapper.classList.toggle("scrollable");
             button.textContent = isScrollable ? "Hide Scroll" : "View More";
+
+            if (!isScrollable) {
+                wrapper.scrollTo({ top: 0, behavior: "smooth" });
+            }
         });
     }
 }
