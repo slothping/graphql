@@ -49,17 +49,40 @@ export async function fetchUserData() {
       }
     }`;
 
-  const response = await fetch(GQL_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ query })
-  });
+  let response;
 
-  const result = await response.json();
-  return result.data.user[0];
+  try {
+    response = await fetch(GQL_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ query })
+    });
+  } catch {
+    throw new Error("Unable to reach the dashboard service.");
+  }
+
+  if (!response.ok) {
+    throw new Error(`Unable to load dashboard data (${response.status}).`);
+  }
+
+  let result;
+
+  try {
+    result = await response.json();
+  } catch {
+    throw new Error("The dashboard service returned an invalid response.");
+  }
+
+  const userData = result?.data?.user;
+
+  if (!userData) {
+    throw new Error("The dashboard service did not return any user data.");
+  }
+
+  return Array.isArray(userData) ? userData[0] : userData;
 }
 
 export function normalizeUserData(user) {

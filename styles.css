@@ -215,6 +215,22 @@ body {
     color: #070707;
 }
 
+#error-msg {
+    display: none;
+    margin: 0 0 14px;
+    padding: 12px 14px;
+    border: 1px solid rgba(255, 92, 92, 0.35);
+    border-radius: 8px;
+    background: rgba(255, 92, 92, 0.12);
+    color: #ffd4d4;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+#error-msg.show {
+    display: block;
+}
+
 #logout-btn {
     margin-bottom: 18px;
 }

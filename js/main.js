@@ -22,8 +22,12 @@ window.addEventListener("DOMContentLoaded", async () => {
     const token = localStorage.getItem("reboot_jwt");
 
     if (token && !isTokenExpired(token)) {
-        showProfile();
-        await loadProfile();
+        try {
+            showProfile();
+            await loadProfile();
+        } catch {
+            showLoginError("Unable to load the dashboard right now.");
+        }
     }
 });
 
@@ -46,8 +50,23 @@ function updateHeader(userName, loggedIn) {
     headerAuthButton.textContent = loggedIn ? "Logout" : "Login";
 }
 
+function clearError() {
+    errorMsg.textContent = "";
+    errorMsg.classList.remove("show");
+}
+
+function showLoginError(message) {
+    errorMsg.textContent = message;
+    errorMsg.classList.add("show");
+    document.getElementById("login-container").hidden = false;
+    document.getElementById("profile-container").hidden = true;
+    document.getElementById("app-header").hidden = true;
+}
+
 async function login(e) {
     e.preventDefault();
+
+    clearError();
 
     const username = document.getElementById("identifier").value;
     const password = document.getElementById("password").value;
@@ -72,62 +91,70 @@ async function login(e) {
         showProfile();
         await loadProfile();
     } catch (err) {
-        errorMsg.innerText = err.message;
+        const message = err.message === "Invalid credentials"
+            ? "Invalid username or password. Please check your credentials and try again."
+            : err.message || "Unable to sign in. Please try again.";
+
+        showLoginError(message);
     }
 }
 
 async function loadProfile() {
-    const user = await fetchUserData();
+    try {
+        const user = await fetchUserData();
 
-    if (!user) {
-        return;
+        if (!user) {
+            return;
+        }
+
+        const {
+            filteredTransactions,
+            totalXP,
+            projects,
+            summary
+        } = normalizeUserData(user);
+
+        updateHeader(user.login, true);
+
+        document.getElementById("user-data").innerHTML = `
+            <div class="profile-summary-card">
+                <div class="summary-item">
+                    <span class="summary-label">Username</span>
+                    <strong>${user.login}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Total XP</span>
+                    <strong>${formatMeasurement(totalXP)}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Audit Ratio</span>
+                    <strong>${user.auditRatio.toFixed(2)}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Audit Received</span>
+                    <strong>${formatMeasurement(user.totalUp)}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Audit Done</span>
+                    <strong>${formatMeasurement(user.totalDown)}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Passed Projects</span>
+                    <strong>${summary.passed}</strong>
+                </div>
+            </div>
+        `;
+
+        const graphTransactions = filteredTransactions.filter(
+            t => !t.path.startsWith("/bahrain/bh-module/checkpoint/")
+        );
+
+        renderInsights(graphTransactions);
+        renderProjectHistory(filteredTransactions);
+        drawXPGraph(graphTransactions);
+        drawAuditGraph(user.totalUp, user.totalDown);
+    } catch (err) {
+        throw err;
     }
-
-    const {
-        filteredTransactions,
-        totalXP,
-        projects,
-        summary
-    } = normalizeUserData(user);
-
-    updateHeader(user.login, true);
-
-    document.getElementById("user-data").innerHTML = `
-        <div class="profile-summary-card">
-            <div class="summary-item">
-                <span class="summary-label">Username</span>
-                <strong>${user.login}</strong>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Total XP</span>
-                <strong>${formatMeasurement(totalXP)}</strong>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Audit Ratio</span>
-                <strong>${user.auditRatio.toFixed(2)}</strong>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Audit Received</span>
-                <strong>${formatMeasurement(user.totalUp)}</strong>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Audit Done</span>
-                <strong>${formatMeasurement(user.totalDown)}</strong>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Passed Projects</span>
-                <strong>${summary.passed}</strong>
-            </div>
-        </div>
-    `;
-
-    const graphTransactions = filteredTransactions.filter(
-        t => !t.path.startsWith("/bahrain/bh-module/checkpoint/")
-    );
-
-    renderInsights(graphTransactions);
-    renderProjectHistory(filteredTransactions);
-    drawXPGraph(graphTransactions);
-    drawAuditGraph(user.totalUp, user.totalDown);
 }
 
