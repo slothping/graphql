@@ -8,6 +8,7 @@ import { formatMeasurement } from "./utils.js";
 
 const loginForm = document.getElementById("login-form");
 const errorMsg = document.getElementById("error-msg");
+const loadingScreen = document.getElementById("loading-screen");
 const headerUsername = document.getElementById("header-username");
 const headerAuthButton = document.getElementById("header-auth-button");
 const insightsSection = document.getElementById("insights-section");
@@ -19,14 +20,20 @@ headerAuthButton.addEventListener("click", handleHeaderAuth);
 window.addEventListener("DOMContentLoaded", async () => {
     updateHeader("Guest", false);
     document.getElementById("app-header").hidden = true;
+    clearError();
+    showLoading(false);
+
     const token = localStorage.getItem("reboot_jwt");
 
     if (token && !isTokenExpired(token)) {
+        showLoading(true);
         try {
-            showProfile();
             await loadProfile();
+            showProfile();
         } catch {
             showLoginError("Unable to load the dashboard right now.");
+        } finally {
+            showLoading(false);
         }
     }
 });
@@ -38,10 +45,12 @@ function handleHeaderAuth() {
         document.getElementById("profile-container").hidden = true;
         document.getElementById("app-header").hidden = true;
         updateHeader("Guest", false);
+        showLoading(false);
     } else {
         document.getElementById("login-container").hidden = false;
         document.getElementById("profile-container").hidden = true;
         document.getElementById("identifier").focus();
+        showLoading(false);
     }
 }
 
@@ -55,18 +64,25 @@ function clearError() {
     errorMsg.classList.remove("show");
 }
 
+function showLoading(isLoading) {
+    loadingScreen.hidden = !isLoading;
+    loadingScreen.style.display = isLoading ? "grid" : "none";
+}
+
 function showLoginError(message) {
     errorMsg.textContent = message;
     errorMsg.classList.add("show");
     document.getElementById("login-container").hidden = false;
     document.getElementById("profile-container").hidden = true;
     document.getElementById("app-header").hidden = true;
+    showLoading(false);
 }
 
 async function login(e) {
     e.preventDefault();
 
     clearError();
+    showLoading(true);
 
     const username = document.getElementById("identifier").value;
     const password = document.getElementById("password").value;
@@ -88,14 +104,16 @@ async function login(e) {
         const token = data.token || data;
         localStorage.setItem("reboot_jwt", token);
 
-        showProfile();
         await loadProfile();
+        showProfile();
     } catch (err) {
         const message = err.message === "Invalid credentials"
             ? "Invalid username or password. Please check your credentials and try again."
             : err.message || "Unable to sign in. Please try again.";
 
         showLoginError(message);
+    } finally {
+        showLoading(false);
     }
 }
 
