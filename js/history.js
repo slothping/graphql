@@ -1,3 +1,5 @@
+import { formatMeasurement } from './utils.js';
+
 export function renderProjectHistory(transactions, container = document.getElementById('project-history-section')) {
     const visibleTransactions = [...transactions].reverse();
 
@@ -9,7 +11,7 @@ export function renderProjectHistory(transactions, container = document.getEleme
                     <thead>
                         <tr>
                             <th>Submission</th>
-                            <th>XP Amount</th>
+                            <th>Amount</th>
                             <th>Date</th>
                         </tr>
                     </thead>
@@ -17,7 +19,7 @@ export function renderProjectHistory(transactions, container = document.getEleme
                         ${visibleTransactions.map(transaction => `
                             <tr>
                                 <td>${transaction.path ? transaction.path.split('/').filter(Boolean).pop() : 'Unknown'}</td>
-                                <td>${transaction.amount} XP</td>
+                                <td>${formatMeasurement(transaction.amount)}</td>
                                 <td>${new Date(transaction.createdAt).toLocaleDateString()}</td>
                             </tr>
                         `).join("")}

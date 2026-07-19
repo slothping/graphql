@@ -4,6 +4,7 @@ import { fetchUserData, normalizeUserData } from "./data.js";
 import { drawXPGraph, drawAuditGraph } from "./graph.js";
 import { renderInsights } from "./insights.js";
 import { renderProjectHistory } from "./history.js";
+import { formatMeasurement } from "./utils.js";
 
 const loginForm = document.getElementById("login-form");
 const errorMsg = document.getElementById("error-msg");
@@ -99,7 +100,7 @@ async function loadProfile() {
             </div>
             <div class="summary-item">
                 <span class="summary-label">Total XP</span>
-                <strong>${(totalXP / 1000).toFixed(1)} kB</strong>
+                <strong>${formatMeasurement(totalXP)}</strong>
             </div>
             <div class="summary-item">
                 <span class="summary-label">Audit Ratio</span>
@@ -107,11 +108,11 @@ async function loadProfile() {
             </div>
             <div class="summary-item">
                 <span class="summary-label">Audit Received</span>
-                <strong>${(user.totalUp / 1000).toFixed(1)} kB</strong>
+                <strong>${formatMeasurement(user.totalUp)}</strong>
             </div>
             <div class="summary-item">
                 <span class="summary-label">Audit Done</span>
-                <strong>${(user.totalDown / 1000).toFixed(1)} kB</strong>
+                <strong>${formatMeasurement(user.totalDown)}</strong>
             </div>
             <div class="summary-item">
                 <span class="summary-label">Passed Projects</span>

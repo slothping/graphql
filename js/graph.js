@@ -1,3 +1,5 @@
+import { formatMeasurement } from "./utils.js";
+
 export function attachTooltipHandlers(element, tooltip, renderHtml) {
     const showTooltip = event => {
         tooltip.style.display = "block";
@@ -93,8 +95,8 @@ export function drawXPGraph(transactions) {
 
         attachTooltipHandlers(circle, tooltip, () => `
             <strong>${projectName}</strong><br>
-            XP: ${(t.amount / 1000).toFixed(2)} kB<br>
-            Total XP: ${(cumulative / 1000).toFixed(2)} kB<br>
+            Amount: ${formatMeasurement(t.amount)}<br>
+            Total: ${formatMeasurement(cumulative)}<br>
             Date: ${new Date(t.createdAt).toLocaleDateString()}
         `);
 
@@ -119,7 +121,7 @@ export function drawAuditGraph(up, down) {
     donePath.setAttribute("fill", "#f6c700");
     attachTooltipHandlers(donePath, tooltip, () => `
         <strong>Done</strong><br>
-        XP: ${(up / 1000).toFixed(2)} kB<br>
+        Amount: ${formatMeasurement(up)}<br>
         Percentage: ${((up / total) * 100).toFixed(1)}%
     `);
     svg.appendChild(donePath);
@@ -129,7 +131,7 @@ export function drawAuditGraph(up, down) {
     receivedPath.setAttribute("fill", "#2e2e2e");
     attachTooltipHandlers(receivedPath, tooltip, () => `
         <strong>Received</strong><br>
-        XP: ${(down / 1000).toFixed(2)} kB<br>
+        Amount: ${formatMeasurement(down)}<br>
         Percentage: ${((down / total) * 100).toFixed(1)}%
     `);
     svg.appendChild(receivedPath);

@@ -1,4 +1,4 @@
-import { getShortPath, formatDuration, largestXpGain } from './utils.js';
+import { getShortPath, formatDuration, largestXpGain, formatMeasurement } from './utils.js';
 
 export function renderInsights(transactions, container = document.getElementById('insights-section')) {
     const orderedByDate = [...transactions].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
@@ -49,8 +49,8 @@ export function renderInsights(transactions, container = document.getElementById
                     <strong>${largestXpGain(transactions)}</strong>
                 </li>
                 <li>
-                    <span>XP per project</span>
-                    <strong>${(xpPerProject / 1000).toFixed(1)} kB</strong>
+                    <span>Amount per project</span>
+                    <strong>${formatMeasurement(xpPerProject)}</strong>
                 </li>
             </ul>
         </div>

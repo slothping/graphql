@@ -25,6 +25,31 @@ export function formatDuration(ms) {
     return `${seconds}s`;
 }
 
+export function formatMeasurement(value) {
+    if (value === null || value === undefined || Number.isNaN(value)) {
+        return "0 B";
+    }
+
+    const absoluteValue = Math.abs(value);
+    const sign = value < 0 ? "-" : "";
+    const units = [
+        { label: "B", divisor: 1 },
+        { label: "kB", divisor: 1000 },
+        { label: "MB", divisor: 1000000 }
+    ];
+
+    let index = 0;
+    while (index < units.length - 1 && absoluteValue >= units[index + 1].divisor) {
+        index += 1;
+    }
+
+    const unit = units[index];
+    const scaledValue = absoluteValue / unit.divisor;
+    const formattedValue = unit.label === "B" ? scaledValue.toFixed(0) : scaledValue.toFixed(1);
+
+    return `${sign}${formattedValue} ${unit.label}`;
+}
+
 export function largestXpGain(transactions) {
     if (!transactions || !transactions.length) return "-";
 
@@ -41,5 +66,5 @@ export function largestXpGain(transactions) {
         return bestEntry;
     }, null);
 
-    return best ? `${(best.amount / 1000).toFixed(1)} kB on ${getShortPath(best.path)}` : "-";
+    return best ? `${formatMeasurement(best.amount)} on ${getShortPath(best.path)}` : "-";
 }
