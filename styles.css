@@ -137,6 +137,39 @@ body {
     color: #f6c700;
 }
 
+body.is__transitioning {
+    pointer-events: none;
+}
+
+.transition__morph__svg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100dvh;
+    pointer-events: none;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.22s ease, visibility 0.22s ease;
+}
+
+.transition__morph__svg.is-visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.transition__morph__svg svg {
+    width: 100%;
+    height: 100%;
+}
+
+.transition__morph__svg svg path {
+    fill: #f6c700;
+    stroke: #f6c700;
+}
+
 #login-container {
     width: min(760px, 100%);
     background: linear-gradient(180deg, rgba(15, 15, 15, 0.9), rgba(10, 10, 10, 0.9));
